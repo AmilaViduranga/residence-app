@@ -58,6 +58,14 @@ const UserSchema = new Schema({
         type: Schema.Types.ObjectId,
         required: true,
         ref: 'Role'
+    },
+    userName: {
+        type: String,
+        required: true
+    },
+    password: {
+        type: String,
+        required: true
     }
 })
 
