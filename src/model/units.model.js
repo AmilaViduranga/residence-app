@@ -6,7 +6,7 @@ const UnitsSchema = new Schema({
         type: String,
         required: true
     },
-    unitt_identifier: {
+    unit_identifier: {
         type: String,
         required: true
     },

@@ -4,7 +4,8 @@ var Schema = mongoose.Schema;
 const GasSchema = new Schema({
     bill_date: {
         type: Date,
-        required: true
+        required: true,
+        default: new Date()
     },
     account_id: {
         type: String,
@@ -37,7 +38,7 @@ const GasSchema = new Schema({
         required: true,
         ref: 'Unit'
     },
-    PublishedBy: {
+    publishedBy: {
         type: Schema.Types.ObjectId,
         required: true,
         ref: 'User'

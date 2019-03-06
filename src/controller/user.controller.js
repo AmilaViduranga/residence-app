@@ -2,6 +2,7 @@ var mongoose    = require("../DBConfig");
 var userModel   = mongoose.model('User');
 var bcrypt      = require('bcrypt');
 var jwt         = require('jsonwebtoken');
+var statics     = require("../globals");
 
 var UserController = function() {
     this.createUser = (user) => {
@@ -85,7 +86,7 @@ var UserController = function() {
                 console.log(instance);
                 bcrypt.compare(authontication.password, instance.password, (err,response) => {
                     if(response == true) {
-                        var token = jwt.sign({ _id: instance._id, userName: instance.userName, first_name: instance.first_name, last_name: instance.last_name, role: instance.principalId}, 'residential_app');
+                        var token = jwt.sign({ _id: instance._id, userName: instance.userName, first_name: instance.first_name, last_name: instance.last_name, role: instance.principalId}, statics.JWT_KEY);
                         resolve({ status: 200, message: "successfully log to system", data: {token: token}});
                     } else {
                         reject({ status: 403, message: "Inalid login"})
