@@ -7,34 +7,40 @@ var statics     = require("../globals");
 var UserController = function() {
     this.createUser = (user) => {
         return new Promise((resolve, reject) => {
-            bcrypt.genSalt(10, (err,salt) => {
-                if(err) {
-                    reject({status: err.code, message: err.errorDetail});
-                }
-                bcrypt.hash(user.password, salt,(err, hash)=> {
-                    var newUser = new userModel({
-                        first_name: user.first_name,
-                        last_name: user.last_name,
-                        address_line1: user.address_line1,
-                        country: user.country,
-                        city: user.city,
-                        address_line2: user.address_line2,
-                        postal_code: user.postal_code,
-                        state: user.state,
-                        nic: user.nic,
-                        telephone: user.telephone,
-                        mobile: user.mobile,
-                        principalId: user.roleId,
-                        status: user.status,
-                        userName: user.userName,
-                        password: hash
-                    });
-                    newUser.save().then(data => {
-                        resolve({status: 200, message: "successfully signup user", data: data});
-                    }).catch(err => {
-                        reject({status: err.code, message: err.errorDetail});
+            userModel.find({userName: user.userName}).then(response => {
+                if(response.length == 0) {
+                    bcrypt.genSalt(10, (err,salt) => {
+                        if(err) {
+                            reject({status: err.code, message: err.errorDetail});
+                        }
+                        bcrypt.hash(user.password, salt,(err, hash)=> {
+                            var newUser = new userModel({
+                                first_name: user.first_name,
+                                last_name: user.last_name,
+                                address_line1: user.address_line1,
+                                country: user.country,
+                                city: user.city,
+                                address_line2: user.address_line2,
+                                postal_code: user.postal_code,
+                                state: user.state,
+                                nic: user.nic,
+                                telephone: user.telephone,
+                                mobile: user.mobile,
+                                principalId: user.roleId,
+                                status: user.status,
+                                userName: user.userName,
+                                password: hash
+                            });
+                            newUser.save().then(data => {
+                                resolve({status: 200, message: "successfully signup user", data: data});
+                            }).catch(err => {
+                                reject({status: err.code, message: err.errorDetail});
+                            })
+                        });
                     })
-                });
+                } else {
+                    reject({status:400, message: "User name already excist"});
+                }
             })
         })
     }

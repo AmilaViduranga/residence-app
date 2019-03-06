@@ -9,13 +9,14 @@ var UnitController = function() {
                 unit_identifier: unit.unit_identifier,
                 floor: unit.floor,
                 status: unit.status,
-                PublishedBy: unit.publishedBy,
-                tenant_id: uniit.tenant_id
+                PublishedBy: unit.PublishedBy,
+                tenant_id: unit.tenant_id
             });
 
             newUnit.save().then(response =>  {
                 resolve({status: 200, message: "successfully create unit", data: response});
             }).catch(err  => {
+                console.log(err);
                 reject({status: err.code, message: err.errorDetail});
             });
         })

@@ -15,13 +15,14 @@ var TenantsController = function() {
                 longitude: tenant.longitude,
                 latitude: tenant.latitude,
                 status: tenant.status,
-                PublishedBy: tenant.pubishedBy,
+                PublishedBy: tenant.PublishedBy,
                 admin_user_id: tenant.admin_user_id
             });
 
             newTenant.save().then(response =>  {
                 resolve({status: 200, message: "successfully create tenant", data: response});
             }).catch(err  => {
+                console.log(err);
                 reject({status: err.code, message: err.errorDetail});
             });
         })

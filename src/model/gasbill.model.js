@@ -13,7 +13,8 @@ const GasSchema = new Schema({
     },
     due_date: {
         type: String,
-        required: true
+        required: true,
+        default: new Date()
     },
     amount: {
         type: Number,
