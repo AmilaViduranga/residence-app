@@ -5,7 +5,8 @@ var RoleController = function() {
     this.createRole = (data) => {
         return new Promise((resolve, reject) => {
             var role = new roleModel({
-                menus: data.menus
+                menus: data.menus,
+                name: data.name
             })
             role.save().then(response => {
                 resolve({status: 200, message: "successfully create role", data: response});
@@ -50,6 +51,16 @@ var RoleController = function() {
         return new Promise((resolve, reject) => {
             roleModel.remove({_id:id}).then(response => {
                 resolve({status: 200, message: "successfully delete role", data: response});
+            }).catch(err => {
+                reject({status: err.code, message: err.errorDetail});
+            })
+        })
+    }
+
+    this.getRoleList = () => {
+        return new Promise((resolve, reject) => {
+            roleModel.find().then(response => {
+                resolve({status: 200, message: "successfully get roles", data: response});
             }).catch(err => {
                 reject({status: err.code, message: err.errorDetail});
             })

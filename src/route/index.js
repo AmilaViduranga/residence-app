@@ -106,6 +106,14 @@ router.delete('/role/delete/:id', jwt({secret: STATICS.JWT_KEY}).unless({path:['
     })
 });
 
+router.get('/role/roles-only', (req, res) => {
+    roleController.getRoleList().then(data => {
+        res.status(data.status).send(data);
+    }).catch(err => {
+        res.status(err.status).send(err);
+    })
+})
+
 
 /*
  * .................. gasbill routes ..................................

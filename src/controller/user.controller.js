@@ -34,6 +34,7 @@ var UserController = function() {
                             newUser.save().then(data => {
                                 resolve({status: 200, message: "successfully signup user", data: data});
                             }).catch(err => {
+                                console.log(err);
                                 reject({status: err.code, message: err.errorDetail});
                             })
                         });
@@ -89,11 +90,10 @@ var UserController = function() {
     this.login = (authontication) => {
         return new Promise((resolve,reject) => {
             userModel.findOne({userName: authontication.username}).populate('principalId').then(instance => {
-                console.log(instance);
                 bcrypt.compare(authontication.password, instance.password, (err,response) => {
                     if(response == true) {
                         var token = jwt.sign({ _id: instance._id, userName: instance.userName, first_name: instance.first_name, last_name: instance.last_name, role: instance.principalId}, statics.JWT_KEY);
-                        resolve({ status: 200, message: "successfully log to system", data: {token: token}});
+                        resolve({ status: 200, message: "successfully log to system", data: {token: token, user_name: instance.first_name + " "+instance.last_name, _id: instance._id}});
                     } else {
                         reject({ status: 403, message: "Inalid login"})
                     }
