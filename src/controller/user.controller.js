@@ -15,10 +15,8 @@ var UserController = function() {
                             reject({status: err.code, message: err.errorDetail});
                         }
                         bcrypt.hash(user.password, salt,(err, hash)=> {
-<<<<<<< HEAD
                             if(user.profile_pic) {
-                                fileManager.uploadFile(user.profile_pic, "public/profile/" + user.userName + ".jpg").then(data => {
-                                    console.log(data);
+                                fileManager.uploadFile(user.profile_pic, "public/profile/" + user.userName).then(path => {
                                     var newUser = new userModel({
                                         first_name: user.first_name,
                                         last_name: user.last_name,
@@ -34,6 +32,7 @@ var UserController = function() {
                                         principalId: user.roleId,
                                         status: user.status,
                                         userName: user.userName,
+                                        profile_pic: path,
                                         password: hash
                                     });
                                     newUser.save().then(data => {
@@ -66,31 +65,6 @@ var UserController = function() {
                                     reject({status: err.code, message: err.errorDetail});
                                 })
                             }
-=======
-                            var newUser = new userModel({
-                                first_name: user.first_name,
-                                last_name: user.last_name,
-                                address_line1: user.address_line1,
-                                country: user.country,
-                                city: user.city,
-                                address_line2: user.address_line2,
-                                postal_code: user.postal_code,
-                                state: user.state,
-                                nic: user.nic,
-                                telephone: user.telephone,
-                                mobile: user.mobile,
-                                principalId: user.roleId,
-                                status: user.status,
-                                userName: user.userName,
-                                password: hash
-                            });
-                            newUser.save().then(data => {
-                                resolve({status: 200, message: "successfully signup user", data: data});
-                            }).catch(err => {
-                                console.log(err);
-                                reject({status: err.code, message: err.errorDetail});
-                            })
->>>>>>> 58eb1f719eb70b098f78732dda88e56a39f78c14
                         });
                     })
                 } else {
@@ -102,12 +76,24 @@ var UserController = function() {
 
     this.updateUser = (user, id) => {
         return new Promise((resolve,reject) => {
-            userModel.findByIdAndUpdate(id, user, {new: true}, (err,  response) => {
-                if (err) {
-                    reject({status: err.code, message: err.errorDetail});
-                }
-                resolve({status: 200, message: "successfully updated user", data: response});
-            })
+            if(user.profile_pic) {
+                fileManager.uploadFile(user.profile_pic, "public/profile/" + user.userName).then(path => {
+                    user.profile_pic = path;
+                    userModel.findByIdAndUpdate(id, user, {new: true}, (err,  response) => {
+                        if (err) {
+                            reject({status: err.code, message: err.errorDetail});
+                        }
+                        resolve({status: 200, message: "successfully updated user", data: response});
+                    })
+                })
+            } else {
+                userModel.findByIdAndUpdate(id, user, {new: true}, (err,  response) => {
+                    if (err) {
+                        reject({status: err.code, message: err.errorDetail});
+                    }
+                    resolve({status: 200, message: "successfully updated user", data: response});
+                })
+            }
         })
     }
 

@@ -166,6 +166,14 @@ router.delete('/gasbill/delete/:id', jwt({secret: STATICS.JWT_KEY}).unless({path
     })
 });
 
+router.post('/gasbill/get/pay_slip',jwt({secret: STATICS.JWT_KEY}).unless({path:['/user/login']}), (req, res) => {
+    gasbillController.findPaySlip(req.body.path).then(data => {
+        res.status(data.status).send(data);
+    }).catch(err => {
+        res.status(err.status).send(err);
+    })
+} )
+
 
 /*
  * .................. tenant routes ..................................

@@ -34,10 +34,18 @@ const GasSchema = new Schema({
         type: Boolean,
         default: true
     },
+    pay_slip: {
+        type: String
+    },
     unit_id: {
         type: Schema.Types.ObjectId,
         required: true,
         ref: 'Unit'
+    },
+    tenant_id: {
+        type: Schema.Types.ObjectId, 
+        required: true,
+        ref: 'Tenants'
     },
     publishedBy: {
         type: Schema.Types.ObjectId,
