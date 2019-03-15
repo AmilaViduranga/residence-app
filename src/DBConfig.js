@@ -15,20 +15,25 @@ var tenantsModel                = require("./model/tenants.model");
 var unitModel                   = require("./model/units.model");
 var userModel                   = require("./model/user.model");
 
+tenantsModel.pre('remove', next => {
+    unitModel.remove({tenant_id: this._id}).exec();
+    next();
+})
+
 mongoose.model("ComplaintManagement", complaintManagementModel);
 //mongoose.model("Counters", countersModel);
-mongoose.model("Document", documentModel);
-mongoose.model("Facilities", facilitiesModel);
-mongoose.model("GasBill", gasBillModel);
-mongoose.model("MaintanceBill", maintanceBillModel);
-mongoose.model("NoticeBoard", noticeBoardModel);
-mongoose.model("PanicAllert", panicAlertModel);
-mongoose.model("Role", roleModel);
-mongoose.model("Tenants", tenantsModel);
-mongoose.model("Unit", unitModel);
-mongoose.model("User", userModel);
+mongoose.model("Document", documentModel, "Document");
+mongoose.model("Facilities", facilitiesModel, "Facilities");
+mongoose.model("GasBill", gasBillModel, "Gasbill");
+mongoose.model("MaintanceBill", maintanceBillModel, "MaintenanceBill");
+mongoose.model("NoticeBoard", noticeBoardModel, "NoticeBoard");
+mongoose.model("PanicAllert", panicAlertModel, "PanicAlert");
+mongoose.model("Role", roleModel, "roles");
+mongoose.model("Tenants", tenantsModel, "Tenants");
+mongoose.model("Unit", unitModel, "units");
+mongoose.model("User", userModel, "users");
 
-mongoose.connect('mongodb://localhost:27017/connectup', (err) => {
+mongoose.connect('mongodb://connectup:connectup19@ds037395.mlab.com:37395/connectup', (err) => {
     if (err) {
         console.log(err);
         process.exit(-1);

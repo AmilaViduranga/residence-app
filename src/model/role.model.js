@@ -5,6 +5,10 @@ const RoleSchema = new Schema ({
     menus: {
         type: Array,
         required: true
+    },
+    name: {
+        type: String,
+        required: true
     }
 });
 
