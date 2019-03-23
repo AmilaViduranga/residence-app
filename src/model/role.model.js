@@ -9,6 +9,10 @@ const RoleSchema = new Schema ({
     name: {
         type: String,
         required: true
+    },
+    crud: {
+        type: Map,
+        of: Boolean
     }
 });
 

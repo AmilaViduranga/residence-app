@@ -6,7 +6,8 @@ var RoleController = function() {
         return new Promise((resolve, reject) => {
             var role = new roleModel({
                 menus: data.menus,
-                name: data.name
+                name: data.name,
+                crud: data.crud
             })
             role.save().then(response => {
                 resolve({status: 200, message: "successfully create role", data: response});
